@@ -8,17 +8,17 @@
     "synchronize": true,
     "logging": false,
     "entities": [
-        "src/models/**/*.{ts,js}"
+        "dist/models/**/*.{ts,js}"
     ],
     "migrations": [
-        "src/migrations/**/*.{ts,js}"
+        "dist/migrations/**/*.{ts,js}"
     ],
     "subscribers": [
-        "src/subscriber/**/*.{ts,js}"
+        "dist/subscriber/**/*.{ts,js}"
     ],
     "cli": {
-        "entitiesDir": "src/models",
-        "migrationsDir": "src/migrations",
-        "subscribersDir": "src/subscriber"
+        "entitiesDir": "dist/models",
+        "migrationsDir": "dist/migrations",
+        "subscribersDir": "dist/subscriber"
     }
 }
