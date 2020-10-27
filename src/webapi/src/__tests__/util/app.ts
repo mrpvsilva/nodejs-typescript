@@ -6,7 +6,7 @@ import bodyParser from 'body-parser'
 
 import { App } from '../../app'
 import { ProdutoController } from '@controllers/ProdutoController'
-import ErrorHandler from '../../middlewares/error.handler'
+import ErrorHandler from '../../handlers/error.handler'
 
 export class AppTest {
   async getApp(): Promise<Application> {

@@ -9,6 +9,7 @@ module.exports = {
     moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>' }),
     preset: 'ts-jest',
     testEnvironment: 'node',
+    modulePathIgnorePatterns: ["<rootDir>/src/__tests__/(util|coverage)"],
     collectCoverage: true,
     collectCoverageFrom: ['<rootDir>/src/controllers/**/*.ts'],
     coverageDirectory: '<rootDir>/src/__tests__/coverage',

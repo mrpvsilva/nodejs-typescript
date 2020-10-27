@@ -3,7 +3,7 @@ import { createConnection, getConnectionOptions } from 'typeorm'
 import bodyParser from 'body-parser'
 
 import { App } from './app'
-import ErrorHandler from './middlewares/error.handler'
+import ErrorHandler from './handlers/error.handler'
 import { ProdutoController } from '@controllers/ProdutoController'
 
 const run = async () => {

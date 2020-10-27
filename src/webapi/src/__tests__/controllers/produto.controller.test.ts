@@ -11,13 +11,11 @@ beforeAll(async () => {
 })
 
 describe('ProdutoController - POST', () => {
-  it('deve criar um novo produto', async () => {
+  it('deve criar um novo produto', () => {
     const body = { nome: faker.commerce.productName() }
-    const response = await request(app).post(uri).send(body)
-    expect(response.status).toBe(201)
+    return request(app).post(uri).send(body).expect(201)
   })
-  it('deve dar erro', async () => {
-    const response = await request(app).post(uri)
-    expect(response.status).toBe(500)
+  it('deve dar erro', () => {
+    return request(app).post(uri).expect(500)
   })
 })
