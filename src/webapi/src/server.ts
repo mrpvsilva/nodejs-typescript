@@ -1,24 +1,21 @@
 import 'reflect-metadata'
-import { createConnection } from 'typeorm'
+import { createConnection, getConnectionOptions } from 'typeorm'
 import bodyParser from 'body-parser'
 
 import { App } from './app'
-
+import ErrorHandler from './middlewares/error.handler'
 import { ProdutoController } from '@controllers/ProdutoController'
 
-createConnection()
-  .then(() => {
-    const app = new App({
-      port: 5000,
-      controllers: [
-        new ProdutoController()
-      ],
-      middleWares: [
-        bodyParser.json(),
-        bodyParser.urlencoded({ extended: true })
-      ]
-    })
-
-    app.listen()
+const run = async () => {
+  const options = await getConnectionOptions()
+  console.log(options)
+  await createConnection(options)
+  const app = new App({
+    port: 5000,
+    controllers: [new ProdutoController()],
+    middleWares: [bodyParser.json(), bodyParser.urlencoded({ extended: true })],
+    handlers: [ErrorHandler],
   })
-  .catch(err => console.error(err))
+  app.listen()
+}
+run()
