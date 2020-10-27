@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 /* eslint-disable no-unused-vars */
 import { Application } from 'express'
-import { createConnection, getConnectionOptions } from 'typeorm'
+import { Connection, createConnection, getConnectionOptions } from 'typeorm'
 import bodyParser from 'body-parser'
 
 import { App } from '../../app'
@@ -9,9 +9,10 @@ import { ProdutoController } from '@controllers/ProdutoController'
 import ErrorHandler from '../../handlers/error.handler'
 
 export class AppTest {
+  connection: Connection
   async getApp(): Promise<Application> {
     const options = await getConnectionOptions()
-    await createConnection(options)
+    this.connection = await createConnection(options)
     const app = new App({
       port: 5000,
       controllers: [new ProdutoController()],
