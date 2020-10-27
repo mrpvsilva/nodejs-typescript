@@ -10,8 +10,8 @@ module.exports = {
     preset: 'ts-jest',
     testEnvironment: 'node',
     collectCoverage: true,
-    collectCoverageFrom: ['<rootDir>/src/(controllers)/**/*.ts'],
-    coverageDirectory: '<rootDir>/src/__test__/coverage',
+    collectCoverageFrom: ['<rootDir>/src/controllers/**/*.ts'],
+    coverageDirectory: '<rootDir>/src/__tests__/coverage',
     coverageReporters: [
         "text-summary",
         "lcov"
