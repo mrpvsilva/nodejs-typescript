@@ -1,4 +1,5 @@
 import 'reflect-metadata'
+/* eslint-disable no-unused-vars */
 import { Application } from 'express'
 import { createConnection, getConnectionOptions } from 'typeorm'
 import bodyParser from 'body-parser'
