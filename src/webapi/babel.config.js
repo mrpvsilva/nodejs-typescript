@@ -22,6 +22,6 @@ module.exports = {
         ['@babel/plugin-proposal-class-properties', { loose: true }]
     ],
     ignore: [
-        '**/*.spec.ts'
+        "**/__tests__"
     ]
 }
