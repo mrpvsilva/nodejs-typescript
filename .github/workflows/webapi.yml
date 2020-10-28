@@ -22,13 +22,16 @@ jobs:
       - uses: actions/checkout@v2
       - uses: borales/actions-yarn@v2.0.0        
         with:
-          cmd: --cwd install # will run `yarn install` command
-      - uses: borales/actions-yarn@v2.0.0
+          cmd: --cwd src/webapi # navigate to src/webapi
+      - uses: borales/actions-yarn@v2.0.0        
         with:
-          cmd: --cwd lint # will run `yarn lint` command
-      - uses: borales/actions-yarn@v2.0.0
-        with:
-          cmd: --cwd test # will run `yarn test` command
-      - uses: borales/actions-yarn@v2.0.0
-        with:
-          cmd: --cwd build # will run `yarn build` command
+          cmd: install # will run `yarn install` command
+      # - uses: borales/actions-yarn@v2.0.0
+      #   with:
+      #     cmd: --cwd lint # will run `yarn lint` command
+      # - uses: borales/actions-yarn@v2.0.0
+      #   with:
+      #     cmd: --cwd test # will run `yarn test` command
+      # - uses: borales/actions-yarn@v2.0.0
+      #   with:
+      #     cmd: --cwd build # will run `yarn build` command
