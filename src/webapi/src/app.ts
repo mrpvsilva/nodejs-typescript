@@ -1,4 +1,5 @@
-import express, { Application, RequestHandler } from 'express'
+// eslint-disable-next-line no-unused-vars
+import express, { Application } from 'express'
 
 export class App {
   public app: Application
