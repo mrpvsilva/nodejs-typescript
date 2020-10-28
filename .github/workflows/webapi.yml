@@ -19,19 +19,15 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - uses: actions/checkout@v2
-      - uses: borales/actions-yarn@v2.0.0
-        name: Navigate to src/webapi        
-        with:
-          cmd: --cwd src/webapi # navigate to src/webapi
+      - uses: actions/checkout@v2      
       - uses: borales/actions-yarn@v2.0.0   
         name: Install     
         with:
-          cmd: install # will run `yarn install` command
+          cmd: --cwd src/webapi install # will run `yarn install` command
       - uses: borales/actions-yarn@v2.0.0
         name: Lint
         with:
-          cmd: lint # will run `yarn lint` command
+          cmd: --cwd src/webapi lint # will run `yarn lint` command
       # - uses: borales/actions-yarn@v2.0.0
       #   with:
       #     cmd: --cwd test # will run `yarn test` command
