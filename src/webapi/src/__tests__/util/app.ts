@@ -11,8 +11,14 @@ import ErrorHandler from '../../handlers/error.handler'
 export class AppTest {
   connection: Connection
   async getApp(): Promise<Application> {
-    const options = await getConnectionOptions()
-    this.connection = await createConnection(options)
+    this.connection = await createConnection({
+      type: 'sqlite',
+      database: ':memory:',
+      dropSchema: true,
+      entities: ['src/models/**/*.ts'],
+      synchronize: true,
+      logging: false,
+    })
     const app = new App({
       port: 5000,
       controllers: [new ProdutoController()],
