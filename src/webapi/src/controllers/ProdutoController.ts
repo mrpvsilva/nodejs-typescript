@@ -24,7 +24,9 @@ export class ProdutoController implements IControllerBase {
 
   index = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const produtos = await this.repository.find()
+      const { nome } = req.query
+      const where = nome ? { nome } : {}
+      const produtos = await this.repository.find({ where })
       res.json(produtos)
     } catch (err) {
       next(err)
@@ -60,7 +62,7 @@ export class ProdutoController implements IControllerBase {
       produto.nome = nome
 
       await this.repository.save(produto)
-      res.json()
+      res.status(200).json()
     } catch (err) {
       next(err)
     }
