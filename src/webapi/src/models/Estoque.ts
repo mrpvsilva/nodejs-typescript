@@ -1,11 +1,4 @@
-import { Produto } from '@models/Produto'
-import {
-  AfterLoad,
-  Column,
-  Entity,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm'
+import { AfterLoad, Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity()
 export class Estoque {
