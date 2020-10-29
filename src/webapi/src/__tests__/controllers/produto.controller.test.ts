@@ -72,10 +72,9 @@ describe('ProdutoController - GET', () => {
   })
 
   it('deve recuperar o produto pelo id', async (done) => {
-    const produto: Produto = await repository.create({ nome: 'p5' })
-    await repository.save(produto)
-
+    const produto = await repository.save({ nome: 'p5' })
     const response = await request(app).get(`${uri}/${produto.id}`)
+
     expect(response.status).toBe(200)
     expect(response.body).toBeTruthy()
     expect(response.body.id).toBe(produto.id)
@@ -85,8 +84,7 @@ describe('ProdutoController - GET', () => {
 
 describe('ProdutoController - PUT', () => {
   it('deve alterar um produto', async (done) => {
-    const produto: Produto = await repository.create({ nome: 'p6' })
-    await repository.save(produto)
+    const produto = await repository.save({ nome: 'p6' })
 
     const response = await request(app)
       .put(`${uri}/${produto.id}`)
