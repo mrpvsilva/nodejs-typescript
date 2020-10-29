@@ -58,7 +58,7 @@ describe('EstoqueController - POST', () => {
     const [estoque] = await repositoryEstoque.find({
       where: { id: response.body.id },
     })
-    console.log('ESTOQUE', estoque)
+
     expect(estoque).toBeTruthy()
     expect(estoque.valorPago).toBe(body.valorPago)
     expect(estoque.margem).toBe(body.margem)

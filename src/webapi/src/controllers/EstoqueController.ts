@@ -34,7 +34,6 @@ export class EstoqueController implements IControllerBase {
       body.produtoId = produtoId
       produto.estoque = body
       await this.repositoryProduto.save(produto)
-      console.log('BODY', body)
       res.status(201).json(body)
     } catch (err) {
       next(err)
