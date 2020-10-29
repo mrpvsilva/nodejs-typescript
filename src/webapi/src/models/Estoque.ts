@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Produto } from '@models/Produto'
+import {
+  AfterLoad,
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm'
 
 @Entity()
 export class Estoque {
@@ -7,12 +14,16 @@ export class Estoque {
 
   @Column({
     type: 'decimal',
+    precision: 10,
+    scale: 2,
     nullable: false,
   })
   valorPago: number
 
   @Column({
     type: 'decimal',
+    precision: 5,
+    scale: 2,
     nullable: false,
   })
   margem: number
@@ -38,7 +49,15 @@ export class Estoque {
 
   @Column({
     type: 'uuid',
-    nullable: false,
+    length: 36,
+    nullable: true,
   })
   produtoId: string
+
+  protected valorVenda: number
+
+  @AfterLoad()
+  setValorVenda() {
+    this.valorVenda = (1 + this.margem) * this.valorPago
+  }
 }

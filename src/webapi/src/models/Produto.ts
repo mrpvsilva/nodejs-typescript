@@ -1,4 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToOne,
+  JoinColumn,
+} from 'typeorm'
+import { Estoque } from './Estoque'
 
 @Entity()
 export class Produto {
@@ -11,4 +18,10 @@ export class Produto {
     unique: true,
   })
   nome: string
+
+  @OneToOne(() => Estoque, {
+    cascade: true,
+  })
+  @JoinColumn()
+  estoque: Estoque
 }

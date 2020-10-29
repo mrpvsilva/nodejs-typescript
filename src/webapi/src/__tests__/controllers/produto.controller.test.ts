@@ -1,3 +1,4 @@
+import { Estoque } from '@models/Estoque'
 /* eslint-disable no-unused-vars */
 import { Application } from 'express'
 import request from 'supertest'
@@ -25,10 +26,32 @@ afterAll(async () => {
 })
 
 describe('ProdutoController - POST', () => {
-  it('deve criar um novo produto', (done) => {
-    const body = { nome: faker.commerce.productName() }
-    request(app).post(uri).send(body).expect(201).end(done)
+  it('deve criar um novo produto', async (done) => {
+    const body = {
+      nome: faker.commerce.productName(),
+      estoque: {
+        valorPago: faker.commerce.price(),
+        margem: faker.random.float(),
+        quantidade: faker.random.number(),
+        quantidadeMinima: faker.random.number(),
+        notaFiscal: faker.random.alphaNumeric(),
+      },
+    }
+
+    const response = await request(app).post(uri).send(body)
+
+    expect(response.status).toBe(201)
+    expect(response.body).toBeTruthy()
+    const produto = await repository.findOne(response.body.id, {
+      relations: ['estoque'],
+    })
+
+    expect(produto).toBeTruthy()
+    expect(produto.estoque).toBeTruthy()
+    expect(produto.estoque.produtoId).toBe(produto.id)
+    done()
   })
+
   it('deve dar erro', (done) => {
     request(app).post(uri).expect(500).end(done)
   })
@@ -72,12 +95,24 @@ describe('ProdutoController - GET', () => {
   })
 
   it('deve recuperar o produto pelo id', async (done) => {
-    const produto = await repository.save({ nome: 'p5' })
+    const estoque = new Estoque()
+    estoque.valorPago = 5.0
+    estoque.margem = 10
+    estoque.quantidade = 500
+    estoque.quantidadeMinima = 15
+    estoque.notaFiscal = '1234566'
+
+    const produto = await repository.save({
+      nome: 'p5',
+      estoque: estoque,
+    })
+
     const response = await request(app).get(`${uri}/${produto.id}`)
 
     expect(response.status).toBe(200)
     expect(response.body).toBeTruthy()
     expect(response.body.id).toBe(produto.id)
+    expect(response.body.estoque).toBeTruthy()
     done()
   })
 })

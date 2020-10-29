@@ -8,7 +8,7 @@ import { getRepository, Repository } from 'typeorm'
 import { AppTest } from '../util/app'
 import { Produto } from '@models/Produto'
 
-const uri = '/api/v1/estoques'
+const uri = '/api/v1/produtos'
 let app: Application
 let appTest: AppTest
 let repositoryProduto: Repository<Produto>
@@ -25,13 +25,21 @@ afterAll(async () => {
   await appTest.connection.close()
 })
 
-fdescribe('EstoqueController - POST', () => {
+describe('EstoqueController - POST', () => {
   it('deve criar um novo estoque', async (done) => {
+    const estoqueAntigo = new Estoque()
+    estoqueAntigo.valorPago = 1
+    estoqueAntigo.margem = 1
+    estoqueAntigo.quantidade = 10
+    estoqueAntigo.quantidadeMinima = 1
+    estoqueAntigo.notaFiscal = '1'
+
     const produto = await repositoryProduto.save({
       nome: faker.commerce.productName(),
+      estoque: estoqueAntigo,
     })
+
     const body = {
-      produtoId: produto.id,
       valorPago: 5.0,
       margem: 10,
       quantidade: 500,
@@ -39,20 +47,25 @@ fdescribe('EstoqueController - POST', () => {
       notaFiscal: '1234566',
     }
 
-    const response = await request(app).post(uri).send(body)
+    const response = await request(app)
+      .post(`${uri}/${produto.id}/estoques`)
+      .send(body)
+
     expect(response.status).toBe(201)
     expect(response.body).toBeTruthy()
     expect(response.body.id).toBeTruthy()
 
-    const estoque = await repositoryEstoque.findOne(response.body.id)
-
+    const [estoque] = await repositoryEstoque.find({
+      where: { id: response.body.id },
+    })
+    console.log('ESTOQUE', estoque)
     expect(estoque).toBeTruthy()
-    expect(estoque.produtoId).toBe(body.produtoId)
     expect(estoque.valorPago).toBe(body.valorPago)
     expect(estoque.margem).toBe(body.margem)
-    expect(estoque.quantidade).toBe(body.quantidade)
+    expect(estoque.quantidade).toBe(estoqueAntigo.quantidade + body.quantidade)
     expect(estoque.quantidadeMinima).toBe(body.quantidadeMinima)
     expect(estoque.notaFiscal).toBe(body.notaFiscal)
+    expect(estoque.produtoId).toBe(produto.id)
 
     done()
   })
