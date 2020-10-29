@@ -6,7 +6,7 @@ import { IControllerBase } from '../interfaces/IControllerBase'
 import { Produto } from '@models/Produto'
 
 export class ProdutoController implements IControllerBase {
-  public path: string = 'produtos'
+  public path = 'produtos'
   public router = express.Router()
   repository: Repository<Produto>
 

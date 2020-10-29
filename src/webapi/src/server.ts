@@ -1,3 +1,4 @@
+import { EstoqueController } from './controllers/EstoqueController'
 import 'reflect-metadata'
 import { createConnection } from 'typeorm'
 import bodyParser from 'body-parser'
@@ -15,7 +16,7 @@ const run = async () => {
   await createConnection()
   const app = new App({
     port: 5000,
-    controllers: [new ProdutoController()],
+    controllers: [new ProdutoController(), new EstoqueController()],
     middleWares: [bodyParser.json(), bodyParser.urlencoded({ extended: true })],
     handlers: [ErrorHandler],
   })
