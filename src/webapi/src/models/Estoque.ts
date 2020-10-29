@@ -1,5 +1,15 @@
 import { AfterLoad, Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
+export class ColumnNumericTransformer {
+  to(data: number): number {
+    return data
+  }
+
+  from(data: string): number {
+    return parseFloat(data)
+  }
+}
+
 @Entity()
 export class Estoque {
   @PrimaryGeneratedColumn('uuid')
@@ -10,6 +20,7 @@ export class Estoque {
     precision: 10,
     scale: 2,
     nullable: false,
+    transformer: new ColumnNumericTransformer(),
   })
   valorPago: number
 
@@ -18,6 +29,7 @@ export class Estoque {
     precision: 5,
     scale: 2,
     nullable: false,
+    transformer: new ColumnNumericTransformer(),
   })
   margem: number
 
@@ -47,10 +59,10 @@ export class Estoque {
   })
   produtoId: string
 
-  protected valorVenda: number
+  valorVenda: number
 
   @AfterLoad()
   setValorVenda() {
-    this.valorVenda = (1 + this.margem) * this.valorPago
+    this.valorVenda = this.valorPago * (1 + this.margem)
   }
 }

@@ -97,7 +97,7 @@ describe('ProdutoController - GET', () => {
   it('deve recuperar o produto pelo id', async (done) => {
     const estoque = new Estoque()
     estoque.valorPago = 5.0
-    estoque.margem = 10
+    estoque.margem = 0.1
     estoque.quantidade = 500
     estoque.quantidadeMinima = 15
     estoque.notaFiscal = '1234566'
@@ -113,6 +113,7 @@ describe('ProdutoController - GET', () => {
     expect(response.body).toBeTruthy()
     expect(response.body.id).toBe(produto.id)
     expect(response.body.estoque).toBeTruthy()
+    expect(response.body.estoque.valorVenda).toBe(5.5)
     done()
   })
 })
