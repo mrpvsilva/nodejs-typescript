@@ -1,10 +1,11 @@
-import { Produto } from '@models/Produto'
 /* eslint-disable no-unused-vars */
 import { getRepository, Repository } from 'typeorm'
 import { Estoque } from '@models/Estoque'
 import express, { NextFunction, Request, Response } from 'express'
 
 import { IControllerBase } from './../interfaces/IControllerBase'
+import { Produto } from '@models/Produto'
+import { EstoqueValidation } from '@validations/Estoque'
 
 export class EstoqueController implements IControllerBase {
   public path = 'produtos'
@@ -19,7 +20,7 @@ export class EstoqueController implements IControllerBase {
   }
 
   initRoutes() {
-    this.router.post('/:produtoId/estoques', this.create)
+    this.router.post('/:produtoId/estoques', EstoqueValidation, this.create)
   }
 
   create = async (req: Request, res: Response, next: NextFunction) => {
