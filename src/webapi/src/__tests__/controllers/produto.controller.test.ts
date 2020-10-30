@@ -29,26 +29,16 @@ describe('ProdutoController - POST', () => {
   it('deve criar um novo produto', async (done) => {
     const body = {
       nome: faker.commerce.productName(),
-      estoque: {
-        valorPago: faker.commerce.price(),
-        margem: faker.random.float(),
-        quantidade: faker.random.number(),
-        quantidadeMinima: faker.random.number(),
-        notaFiscal: faker.random.alphaNumeric(),
-      },
     }
 
     const response = await request(app).post(uri).send(body)
 
     expect(response.status).toBe(201)
     expect(response.body).toBeTruthy()
-    const produto = await repository.findOne(response.body.id, {
-      relations: ['estoque'],
-    })
-
+    const produto = await repository.findOne(response.body.id)
     expect(produto).toBeTruthy()
-    expect(produto.estoque).toBeTruthy()
-    expect(produto.estoque.produtoId).toBe(produto.id)
+    expect(produto.nome).toBe(body.nome)
+
     done()
   })
 

@@ -30,7 +30,9 @@ export class EstoqueController implements IControllerBase {
       const produto = await this.repositoryProduto.findOne(produtoId, {
         relations: ['estoque'],
       })
-      body.quantidade = body.quantidade + produto.estoque.quantidade
+
+      body.quantidade =
+        body.quantidade + (produto.estoque ? produto.estoque.quantidade : 0)
       body.produtoId = produtoId
       produto.estoque = body
       await this.repositoryProduto.save(produto)

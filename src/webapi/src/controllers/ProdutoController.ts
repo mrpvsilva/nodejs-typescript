@@ -1,4 +1,3 @@
-import { Estoque } from '@models/Estoque'
 import { Produto } from '@models/Produto'
 /* eslint-disable no-unused-vars */
 import express, { Request, Response, NextFunction } from 'express'
@@ -10,11 +9,9 @@ export class ProdutoController implements IControllerBase {
   public path = 'produtos'
   public router = express.Router()
   repository: Repository<Produto>
-  repositoryEstoque: Repository<Estoque>
 
   constructor() {
     this.repository = getRepository(Produto)
-    this.repositoryEstoque = getRepository(Estoque)
     this.initRoutes()
   }
 
@@ -53,9 +50,6 @@ export class ProdutoController implements IControllerBase {
     try {
       const { body } = req
       const produto = await this.repository.save(body)
-      await this.repositoryEstoque.update(produto.estoque.id, {
-        produtoId: produto.id,
-      })
       res.status(201).json(produto)
     } catch (err) {
       next(err)
