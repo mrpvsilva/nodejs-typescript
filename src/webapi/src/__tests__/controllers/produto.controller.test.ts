@@ -42,8 +42,38 @@ describe('ProdutoController - POST', () => {
     done()
   })
 
-  it('deve dar erro', (done) => {
-    request(app).post(uri).expect(500).end(done)
+  it('deve dar erro quando o nome não existir', async (done) => {
+    const response = await request(app).post(uri).send()
+    expect(response.status).toBe(400)
+    expect(response.body).toBeTruthy()
+    expect(response.body).toEqual({
+      errors: [{ nome: 'Nome é obrigatório' }],
+    })
+
+    done()
+  })
+
+  it('deve dar erro quando o nome for vazio', async (done) => {
+    const response = await request(app).post(uri).send({ nome: '' })
+    expect(response.status).toBe(400)
+    expect(response.body).toBeTruthy()
+    expect(response.body).toEqual({
+      errors: [{ nome: 'Nome é obrigatório' }],
+    })
+
+    done()
+  })
+
+  it('deve dar erro quando o nome já existir', async (done) => {
+    await repository.save({ nome: 'abcde' })
+    const response = await request(app).post(uri).send({ nome: 'abcde' })
+    expect(response.status).toBe(400)
+    expect(response.body).toBeTruthy()
+    expect(response.body).toEqual({
+      errors: [{ nome: 'Produto já existe' }],
+    })
+
+    done()
   })
 })
 

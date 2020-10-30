@@ -1,9 +1,10 @@
-import { Produto } from '@models/Produto'
 /* eslint-disable no-unused-vars */
 import express, { Request, Response, NextFunction } from 'express'
 import { Repository, getRepository } from 'typeorm'
-
 import { IControllerBase } from '../interfaces/IControllerBase'
+import { Produto } from '@models/Produto'
+
+import { ProdutoValidation } from '@validations/Produto'
 
 export class ProdutoController implements IControllerBase {
   public path = 'produtos'
@@ -18,7 +19,7 @@ export class ProdutoController implements IControllerBase {
   public initRoutes() {
     this.router.get('/', this.index)
     this.router.get('/:id', this.get)
-    this.router.post('/', this.create)
+    this.router.post('/', ProdutoValidation, this.create)
     this.router.put('/:id', this.update)
   }
 

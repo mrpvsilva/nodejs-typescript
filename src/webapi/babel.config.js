@@ -15,7 +15,8 @@ module.exports = {
             alias: {
                 '@config': './src/config',
                 '@models': './src/models',
-                '@controllers': './src/controllers'
+                '@controllers': './src/controllers',
+                '@validations': './src/validations'
             }
         }],
         ['@babel/plugin-proposal-decorators', { legacy: true }],

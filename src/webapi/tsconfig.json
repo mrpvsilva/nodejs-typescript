@@ -29,6 +29,9 @@
       ],
       "@config/*": [
         "./src/config/*"
+      ],
+      "@validations/*": [
+        "src/validations/*"
       ]
     }
   },
