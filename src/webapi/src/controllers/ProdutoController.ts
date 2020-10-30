@@ -20,7 +20,7 @@ export class ProdutoController implements IControllerBase {
     this.router.get('/', this.index)
     this.router.get('/:id', this.get)
     this.router.post('/', ProdutoValidation, this.create)
-    this.router.put('/:id', this.update)
+    this.router.put('/:id', ProdutoValidation, this.update)
   }
 
   index = async (req: Request, res: Response, next: NextFunction) => {

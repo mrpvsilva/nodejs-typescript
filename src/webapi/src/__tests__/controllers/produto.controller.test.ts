@@ -140,17 +140,90 @@ describe('ProdutoController - GET', () => {
 
 describe('ProdutoController - PUT', () => {
   it('deve alterar um produto', async (done) => {
-    const produto = await repository.save({ nome: 'p6' })
+    const produto = await repository.save({
+      nome: faker.commerce.productName(),
+    })
+
+    const nome = faker.commerce.productName()
 
     const response = await request(app)
       .put(`${uri}/${produto.id}`)
-      .send({ nome: 'p6_' })
+      .send({ nome })
 
     expect(response.status).toBe(200)
     expect(response.body).toBeFalsy()
 
     const new_ = await repository.findOne(produto.id)
-    expect(new_.nome).toBe('p6_')
+    expect(new_.nome).toBe(nome)
+    done()
+  })
+
+  it('deve dar erro quando o nome não existir', async (done) => {
+    const produto = await repository.save({
+      nome: faker.commerce.productName(),
+    })
+    const response = await request(app).put(`${uri}/${produto.id}`)
+    expect(response.status).toBe(400)
+    expect(response.body).toBeTruthy()
+    expect(response.body).toEqual({
+      errors: [{ nome: 'Nome é obrigatório' }],
+    })
+
+    done()
+  })
+
+  it('deve dar erro quando o nome for vazio', async (done) => {
+    const produto = await repository.save({
+      nome: faker.commerce.productName(),
+    })
+    const response = await request(app)
+      .put(`${uri}/${produto.id}`)
+      .send({ nome: '' })
+    expect(response.status).toBe(400)
+    expect(response.body).toBeTruthy()
+    expect(response.body).toEqual({
+      errors: [{ nome: 'Nome é obrigatório' }],
+    })
+
+    done()
+  })
+
+  it('deve dar erro quando o nome já existir', async (done) => {
+    const p1 = await repository.save({
+      nome: faker.commerce.productName(),
+    })
+
+    const p2 = await repository.save({
+      nome: faker.commerce.productName(),
+    })
+
+    const response = await request(app)
+      .put(`${uri}/${p2.id}`)
+      .send({ nome: p1.nome })
+
+    expect(response.status).toBe(400)
+    expect(response.body).toBeTruthy()
+    expect(response.body).toEqual({
+      errors: [{ nome: 'Produto já existe' }],
+    })
+
+    done()
+  })
+
+  it('deve alterar quando o nome não for atualizado ', async (done) => {
+    const p1 = await repository.save({
+      nome: faker.commerce.productName(),
+    })
+
+    const response = await request(app)
+      .put(`${uri}/${p1.id}`)
+      .send({ nome: p1.nome })
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBeFalsy()
+
+    const new_ = await repository.findOne(p1.id)
+    expect(new_.nome).toBe(p1.nome)
     done()
   })
 })

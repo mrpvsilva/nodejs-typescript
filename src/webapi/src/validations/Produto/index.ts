@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import { Schema, checkSchema } from 'express-validator'
-import { getRepository } from 'typeorm'
+import { getRepository, Not } from 'typeorm'
 import { Produto } from '@models/Produto'
 import validate from '../validate'
 
@@ -12,9 +12,11 @@ const schema: Schema = {
       errorMessage: 'Nome é obrigatório',
     },
     custom: {
-      options: async (value) => {
+      options: async (value, { req }) => {
+        const { id } = req.params
         const count = await getRepository(Produto).count({
           where: {
+            id: Not(id || 0),
             nome: value,
           },
         })
