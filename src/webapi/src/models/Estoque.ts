@@ -1,4 +1,10 @@
-import { AfterLoad, Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import {
+  AfterLoad,
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  Unique,
+} from 'typeorm'
 
 export class ColumnNumericTransformer {
   to(data: number): number {
@@ -11,6 +17,7 @@ export class ColumnNumericTransformer {
 }
 
 @Entity()
+@Unique(['produtoId', 'notaFiscal'])
 export class Estoque {
   @PrimaryGeneratedColumn('uuid')
   id: string

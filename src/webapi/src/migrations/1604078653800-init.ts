@@ -1,12 +1,12 @@
 // eslint-disable-next-line no-unused-vars
 import { MigrationInterface, QueryRunner } from 'typeorm'
 
-export class initial1603990176076 implements MigrationInterface {
-  name = 'initial1603990176076'
+export class init1604078653800 implements MigrationInterface {
+  name = 'init1604078653800'
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      'CREATE TABLE `estoque` (`id` varchar(36) NOT NULL, `valorPago` decimal(10,2) NOT NULL, `margem` decimal(5,2) NOT NULL, `quantidade` int NOT NULL, `quantidadeMinima` int NOT NULL, `notaFiscal` varchar(50) NOT NULL, `produtoId` varchar(36) NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB'
+      'CREATE TABLE `estoque` (`id` varchar(36) NOT NULL, `valorPago` decimal(10,2) NOT NULL, `margem` decimal(5,2) NOT NULL, `quantidade` int NOT NULL, `quantidadeMinima` int NOT NULL, `notaFiscal` varchar(50) NOT NULL, `produtoId` varchar(36) NULL, UNIQUE INDEX `IDX_66f357fe8c05a9ff85980fbcd8` (`produtoId`, `notaFiscal`), PRIMARY KEY (`id`)) ENGINE=InnoDB'
     )
     await queryRunner.query(
       'CREATE TABLE `produto` (`id` varchar(36) NOT NULL, `nome` varchar(100) NOT NULL, `estoqueId` varchar(36) NULL, UNIQUE INDEX `IDX_1c1927cfd2f54756f9ed55289c` (`nome`), UNIQUE INDEX `REL_7d2a55a6681f08005b19373025` (`estoqueId`), PRIMARY KEY (`id`)) ENGINE=InnoDB'
@@ -27,6 +27,9 @@ export class initial1603990176076 implements MigrationInterface {
       'DROP INDEX `IDX_1c1927cfd2f54756f9ed55289c` ON `produto`'
     )
     await queryRunner.query('DROP TABLE `produto`')
+    await queryRunner.query(
+      'DROP INDEX `IDX_66f357fe8c05a9ff85980fbcd8` ON `estoque`'
+    )
     await queryRunner.query('DROP TABLE `estoque`')
   }
 }
